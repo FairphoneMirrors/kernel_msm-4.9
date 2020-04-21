@@ -12,6 +12,9 @@
  */
 
 #define pr_fmt(fmt)	"LCDB: %s: " fmt, __func__
+//[Arima][8901][Jialongjhan]Add delay time between VSN and VSP 20191104 Start
+#define LCDB_PWRUP_PWRDN_CTL_REG 0x66
+//[Arima][8901][Jialongjhan]Add delay time between VSN and VSP 20191104 End
 
 #include <linux/delay.h>
 #include <linux/device.h>
@@ -2306,6 +2309,9 @@ static int qpnp_lcdb_regulator_probe(struct platform_device *pdev)
 	int rc;
 	struct device_node *node;
 	struct qpnp_lcdb *lcdb;
+	//[Arima][8901][Jialongjhan]Add delay time between VSN and VSP 20191104 Start
+	u8 val = 0xF; // 0xF==1111==VSN delay 8ms; VSP delay 8ms
+	//[Arima][8901][Jialongjhan]Add delay time between VSN and VSP 20191104 End
 
 	node = pdev->dev.of_node;
 	if (!node) {
@@ -2357,6 +2363,10 @@ static int qpnp_lcdb_regulator_probe(struct platform_device *pdev)
 		pr_info("LCDB module successfully registered! lcdb_en=%d ldo_voltage=%dmV ncp_voltage=%dmV bst_voltage=%dmV\n",
 			lcdb->lcdb_enabled, lcdb->ldo.voltage_mv,
 			lcdb->ncp.voltage_mv, lcdb->bst.voltage_mv);
+
+	//[Arima][8901][Jialongjhan]Add delay time between VSN and VSP 20191104 Start
+	rc = qpnp_lcdb_write(lcdb, lcdb->base + LCDB_PWRUP_PWRDN_CTL_REG , &val, 1);
+	//[Arima][8901][Jialongjhan]Add delay time between VSN and VSP 20191104 End
 
 	return rc;
 }
