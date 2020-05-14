@@ -533,10 +533,8 @@ int mdss_dsi_panel_reset(struct mdss_panel_data *pdata, int enable)
 		//Move "pull low TP reset pin" from mdss_dsi.c,
 		//it have to same with LCM reset pin pull low
 		
-		/*[Fairphone_8901][Jialong]To reduce power,pull down Touch reset pin when panel off start*/
 		//TP reset pin pull low with LCD reset pin at same time.
 		gpio_direction_output(64, 0);
-		/*[Fairphone_8901][Jialong]To reduce power,pull down Touch reset pin when panel off end*/
 		
 		msleep(1);
 		
